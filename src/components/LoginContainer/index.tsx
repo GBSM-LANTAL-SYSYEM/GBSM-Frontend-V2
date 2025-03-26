@@ -5,7 +5,7 @@ import useAuth from "@hooks/useAuth";
 import { AiFillExclamationCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const LoginContainer = () => {
-    const { formData, setFormData, handleSignIn, isLoading } = useAuth();
+    const { loginData, setLoginData, handleSignIn, isLoading } = useAuth();
     const [showPassword, setShowPassword] = React.useState(false);
 
     const togglePasswordVisibility = () => {
@@ -19,9 +19,9 @@ const LoginContainer = () => {
                     <S.LoginInput
                         type="text"
                         name="login"
-                        value={formData.login}
+                        value={loginData.login}
                         placeholder="아이디"
-                        onChange={(e) => setFormData({ ...formData, login: e.target.value })}
+                        onChange={(e) => setLoginData({ ...loginData, login: e.target.value })}
                     />
                     <S.LoginIssueText>
                         <AiFillExclamationCircle className="issue_logo" />
@@ -33,9 +33,9 @@ const LoginContainer = () => {
                     <S.LoginInput
                         type={showPassword ? "text" : "password"}
                         name="password"
-                        value={formData.password}
+                        value={loginData.password}
                         placeholder="비밀번호"
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                     />
                     <S.PasswordToggleButton type="button" onClick={togglePasswordVisibility}>
                         {showPassword ? <AiFillEyeInvisible className="show_logo" /> : <AiFillEye className="show_logo" />}
@@ -44,7 +44,7 @@ const LoginContainer = () => {
                 <S.LoginBtn type="submit" disabled={isLoading}>
                     로그인
                 </S.LoginBtn>
-                <S.SignInBtn to={"/signin"}>
+                <S.SignInBtn to={"/signup"}>
                     <span>회원가입</span>
                 </S.SignInBtn>
             </S.LoginInputWrap>

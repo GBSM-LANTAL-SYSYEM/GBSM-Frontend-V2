@@ -6,13 +6,12 @@ import { useNavigate } from "react-router-dom";
 interface LoginData {
   login: string;
   password: string;
-};
+}
 
-interface AuthResponse {
-  success: boolean;
-  accessToken?: string;
-  refreshToken?: string;
-};
+interface SignupData {
+  username: string;
+  password: string;
+}
 
 interface CheckTokenResponse {
   success: boolean;
@@ -26,28 +25,36 @@ interface CheckTokenResponse {
       username: string;
       role: "admin" | "user";
     };
-    token: string;
   };
 }
 
 const useAuth = () => {
-  const [formData, setFormData] = useState<LoginData>({ 
+  const [loginData, setLoginData] = useState<LoginData>({ 
     login: "", 
     password: ""
   });
+
+  const [signupData, setSignupData] = useState<SignupData>({
+    username: "",
+    password: "",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
   
     try {
-      const response = await postWithToken(null, "/auth/login", formData);
+      const response = await postWithToken(null, "/auth/login", loginData);
   
-      if (!response.data.success || !response.data.accessToken) {
-        throw new Error("아이디 또는 비밀번호가 올바르지 않습니다.");
+      if (!response.data.success) {
+        throw { response: { status: 400 } };
+      }
+
+      if (!response.data.accessToken) {
+        throw { response: { status: 400 } };
       }
   
       const accessToken = response.data.accessToken;
@@ -55,10 +62,6 @@ const useAuth = () => {
   
       const verifyResponse = await fetcherWithToken(accessToken, "/auth/check_token");
       const userData: CheckTokenResponse = verifyResponse.data;
-  
-      if (!userData.success) {
-        throw new Error("로그인 세션을 확인할 수 없습니다. 다시 시도해주세요.");
-      }
   
       const { username, role } = userData.body.userStatus;
   
@@ -68,44 +71,64 @@ const useAuth = () => {
       Toastify({ message: `${username}님, 환영합니다!`, type: "info" });
   
       setTimeout(() => {
-        if (role === "admin") {
-          navigate("/admin");
-        } else {
-          navigate("/student");
-        }
+        navigate(role === "admin" ? "/admin" : "/student");
       }, 1000);
   
     } catch (error: any) {
-      let errorMessage = "";
-  
       if (error.response) {
-        switch (error.response.status) {
-          case 400:
-            errorMessage = "아이디 또는 비밀번호가 올바르지 않습니다.";
-            break;
-          case 401:
-            errorMessage = "인증이 만료되었습니다. 다시 로그인해주세요.";
-            break;
-          case 403:
-            errorMessage = "접근 권한이 없습니다.";
-            break;
-          case 404:
-            errorMessage = "서버를 찾을 수 없습니다. 관리자에게 문의하세요.";
-            break;
-          case 500:
-            errorMessage = "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
-            break;
+        if (error.response.status === 400) {
+          Toastify({ message: "아이디 또는 비밀번호가 올바르지 않습니다.", type: "error" });
+        } else if (error.response.status === 401) {
+          Toastify({ message: "인증이 만료되었습니다. 다시 로그인해주세요.", type: "info" });
         }
       }
-  
-      Toastify({ message: errorMessage, type: "error" });
-  
     } finally {
       setIsLoading(false);
     }
-  };
+};
 
-  return { formData, setFormData, handleSignIn, isLoading };
+const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  if (signupData.username.length < 4 || signupData.username.length > 15) {
+    Toastify({ message: "아이디는 4~15자 사이여야 합니다.", type: "error" });
+    setIsLoading(false);
+    return;
+  }
+
+  if (signupData.password.length < 4 || signupData.password.length > 20) {
+    Toastify({ message: "비밀번호는 4~20자 사이여야 합니다.", type: "error" });
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    const response = await postWithToken(null, "/user/signup", signupData);
+
+    if (response.status === 409) {
+      throw new Error(response.data.message); 
+    }
+
+    Toastify({ message: "회원가입이 완료되었습니다! 자동으로 이동됩니다.", type: "success" });
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+
+  } catch (error: any) {
+    if (error.status === 400) {
+      Toastify({ message: "아이디와 비밀번호를 입력해주세요.", type: "error" });
+    }
+    if (error.status === 409) {
+      Toastify({ message: "이미 사용중인 아이디입니다.", type: "error" });
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  return { loginData, setLoginData, handleSignIn, signupData, setSignupData, handleSignup, isLoading };
 };
 
 export default useAuth;
