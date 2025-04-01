@@ -4,7 +4,7 @@ import React from "react";
 import useAuth from "@hooks/useAuth";
 import { AiFillExclamationCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-const LoginContainer = () => {
+const SigninContainer = () => {
     const { loginData, setLoginData, handleSignIn, isLoading } = useAuth();
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -52,4 +52,4 @@ const LoginContainer = () => {
     );
 };
 
-export default LoginContainer;
+export default SigninContainer;

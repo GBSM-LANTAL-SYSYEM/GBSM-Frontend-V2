@@ -3,7 +3,7 @@ import * as C from "@/allFiles"
 
 import { GBSM_Symbol } from "@/assets";
 
-const Landing = () => {
+const Signin = () => {
     return (
         <>
             <S.Container>
@@ -24,7 +24,7 @@ const Landing = () => {
                                         </S.LoginTextCont>
                                     </S.LoginTitle>
                                     <div>
-                                        <C.LoginContainer />
+                                        <C.SigninContainer />
                                     </div>
                                 </S.LoginSubCont>
                             </S.LoginCont>
@@ -37,4 +37,4 @@ const Landing = () => {
     );
 };
 
-export default Landing
+export default Signin

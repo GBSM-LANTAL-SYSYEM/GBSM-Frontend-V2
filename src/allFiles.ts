@@ -1,6 +1,6 @@
-import Landing from "./pages/Landing";
+import Signin from "./pages/User/Signin";
 import Signup from "./pages/User/Signup";
-import LoginContainer from "./components/LoginContainer";
-import SignupContainer from "./components/SignupContainer";
+import SigninContainer from "./components/User/SigninContainer";
+import SignupContainer from "./components/User/SignupContainer";
 
-export { Landing, Signup, LoginContainer, SignupContainer }
+export { Signin, Signup, SigninContainer, SignupContainer }
