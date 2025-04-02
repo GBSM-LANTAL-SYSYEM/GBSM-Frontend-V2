@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { SchoolFullImg } from "@/assets";
+import { colors } from "@/styles";
 
 export const Container = styled.div`
   overflow: hidden;
@@ -29,7 +30,7 @@ export const MainCont = styled.div`
   border-radius: 8px;
   transition: all 0.7s;
   animation: fadein 1s ease-in-out;
-  background-color: #fff;
+  background-color: ${colors.white};
   min-height: 35rem;
   min-width: 50rem;
   max-height: 60rem;

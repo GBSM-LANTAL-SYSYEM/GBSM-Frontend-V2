@@ -1,3 +1,4 @@
+import { colors } from "@/styles";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -30,8 +31,8 @@ export const LoginInput = styled.input`
   width: 100%;
   padding: 15px 25px;
   font-size: 13px;
-  color: #000;
-  border: 1px #c4c4c4 solid;
+  color: ${colors.black};
+  border: 1px ${colors.gray_100} solid;
   border-radius: 5px;
   outline: transparent 1px solid;
   box-sizing: border-box;
@@ -48,7 +49,7 @@ export const PasswordToggleButton = styled.button`
 
   .show_logo {
     font-size: 20px;
-    color: #707070;
+    color: ${colors.gray_300};
   }
 `;
 
@@ -61,22 +62,22 @@ export const LoginIssueText = styled.div`
   margin-top: 10px;
 
   .issue_logo {
-    color: rgb(255, 0, 0);
+    color: ${colors.red_100};
     margin-bottom: -2.5px;
     font-size: 14px;
   }
 
   span {
-    color: #333;
+    color: ${colors.gray_400};
     margin-left: 3px;
   }
 `;
 
 export const LoginBtn = styled.button`
-  background-color: #00aa87;
+  background-color: ${colors.primary};
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: ${colors.white};
   cursor: pointer;
   display: block;
   font-family: Noto Sans KR, sans-serif;
@@ -89,30 +90,12 @@ export const LoginBtn = styled.button`
   transition: background-color 0.12s ease-in;
 
   &:hover {
-    background-color: #029678;
+    background-color: ${colors.primary_hover};
   }
 `;
 
-export const ErrorText = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  color: red;
-  font-size: 12px;
-  margin: 10px 10px;
-`;
-
-export const LoadingText = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  color: #3669dd;
-  font-size: 12px;
-  margin: 10px 20px;
-`;
-
 export const SignInBtn = styled(NavLink)`
-  color: #7d7d7d;
+  color: ${colors.gray_200};
   display: flex;
   align-items: center;
   justify-content: center;

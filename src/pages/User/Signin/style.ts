@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import { SchoolFullImg } from "@/assets";
+import { colors } from "@/styles";
 
 export const Container = styled.div`
   overflow: hidden;
@@ -29,7 +30,7 @@ export const MainCont = styled.div`
   border-radius: 8px;
   transition: all 0.7s;
   animation: fadein 1s ease-in-out;
-  background-color: #fff;
+  background-color: ${colors.white};
   min-height: 35rem;
   min-width: 50rem;
   max-height: 60rem;
@@ -87,7 +88,7 @@ export const LoginLogoCont = styled.div`
 `;
 
 export const LoginTextCont = styled.div`
-  color: #000;
+  color: ${colors.black};
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -98,7 +99,7 @@ export const LoginTextCont = styled.div`
   margin: 15px;
 
   .tag_bottom {
-    color: #7d7d7d;
+    color: ${colors.gray_200};
   }
 `;
 
@@ -117,10 +118,10 @@ export const RentalStauts = styled.div`
 `;
 
 export const LoginBtn = styled.button`
-  background-color: #00aa87;
+  background-color: ${colors.primary};
   border: none;
   border-radius: 5px;
-  color: #fff;
+  color: ${colors.white};
   cursor: pointer;
   display: block;
   font-family: Noto Sans KR, sans-serif;
@@ -133,6 +134,6 @@ export const LoginBtn = styled.button`
   transition: background-color 0.12s ease-in;
 
   &:hover {
-    background-color: #029678;
+    background-color: ${colors.primary_hover};
   }
 `;

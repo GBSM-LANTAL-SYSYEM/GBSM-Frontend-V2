@@ -1,3 +1,4 @@
+import { colors } from "@/styles";
 import styled from "styled-components";
 
 export const TopCont = styled.div`
@@ -25,6 +26,6 @@ export const MainWrap = styled.div`
   }
 
   & > h1 > span {
-    color: #ec7302;
+    color: ${colors.orange_100};
   }
 `;
