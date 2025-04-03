@@ -1,6 +1,6 @@
 import { useState } from "react"; 
 import { Toastify } from "@/components/Toastify";
-import { postWithToken, fetcherWithToken } from "@/api/axios";
+import { postWithToken, fetcherWithToken } from "@/api/server";
 import { useNavigate } from "react-router-dom";
 
 interface LoginData {
