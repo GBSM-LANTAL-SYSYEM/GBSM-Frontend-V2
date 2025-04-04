@@ -24,6 +24,7 @@ const useFetchLab = () => {
         try {
             const response = await GBSM_SERVER.get("/lab");
             setRentalRequests(response.data.body);
+            console.log(response.data) // 승인 됐는지 확인해봐야함
         } catch (error: any) {
             if(error.status === 401) {
                 Toastify({message: "세션이 만료되었습니다. 로그인해주세요.", type: "info"})
