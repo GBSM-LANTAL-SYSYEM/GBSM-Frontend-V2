@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { GBSM_SERVER } from "@/api/server"
 import { Toastify } from "@/components/Toastify";
+import useAuth from "./useAuth";
 
 interface Lab {
     userId: number;
@@ -16,14 +17,18 @@ interface Lab {
 const useFetchLab = () => {
     const [rentalRequests, setRentalRequests] = useState<Lab[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { handleLogout } = useAuth()
 
     const fetchAvailableLabs = async () => {
         setIsLoading(true);
         try {
             const response = await GBSM_SERVER.get("/lab");
             setRentalRequests(response.data.body);
-        } catch (error) {
-            Toastify({message: "실습실 목록을 불러오는 중 문제가 발생했습니다.", type: "error"})
+        } catch (error: any) {
+            if(error.status === 401) {
+                Toastify({message: "세션이 만료되었습니다. 로그인해주세요.", type: "info"})
+                handleLogout(false)
+            }
         } finally {
             setIsLoading(false);
         }

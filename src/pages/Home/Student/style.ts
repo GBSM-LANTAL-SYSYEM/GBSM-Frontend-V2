@@ -98,7 +98,7 @@ export const RentCont = styled.div`
   height: 200px;
 
   .gbsw {
-    width: 5rem;
+    width: 6rem;
   }
   .arrow {
     color: #7d7d7d;

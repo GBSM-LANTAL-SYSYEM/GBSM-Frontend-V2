@@ -72,14 +72,15 @@ const useAuth = () => {
   
       setTimeout(() => {
         navigate(role === "admin" ? "/admin" : "/student");
-      }, 1000);
+      }, 2000);
   
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 400) {
           Toastify({ message: "아이디 또는 비밀번호가 올바르지 않습니다.", type: "error" });
         } else if (error.response.status === 401) {
-          Toastify({ message: "인증이 만료되었습니다. 다시 로그인해주세요.", type: "info" });
+          Toastify({ message: "세션이 만료되었습니다. 다시 로그인해주세요.", type: "info" });
+          handleLogout(false);
         }
       }
     } finally {
@@ -128,7 +129,19 @@ const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
   }
 };
 
-  return { loginData, setLoginData, handleSignIn, signupData, setSignupData, handleSignup, isLoading };
+const handleLogout = (showMessage: boolean = true) => {
+  if (showMessage) {
+    Toastify({ message: "로그아웃되었습니다.", type: "info" });
+  }
+
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("username");
+  localStorage.removeItem("role");
+
+  navigate("/");
+};
+
+  return { loginData, setLoginData, handleSignIn, signupData, setSignupData, handleSignup, isLoading, handleLogout };
 };
 
 export default useAuth;
