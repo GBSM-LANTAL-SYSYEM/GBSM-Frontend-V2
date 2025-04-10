@@ -65,9 +65,6 @@ const useAuth = () => {
   
       const { username, role } = userData.body.userStatus;
   
-      localStorage.setItem("username", username);
-      localStorage.setItem("role", role);
-  
       Toastify({ message: `${username}님, 환영합니다!`, type: "info" });
   
       setTimeout(() => {
@@ -77,9 +74,9 @@ const useAuth = () => {
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 400) {
-          Toastify({ message: "아이디 또는 비밀번호가 올바르지 않습니다.", type: "error" });
+          Toastify({ message: "아이디 또는 비밀번호가 입력되지 않았습니다.", type: "error" });
         } else if (error.response.status === 401) {
-          Toastify({ message: "세션이 만료되었습니다. 다시 로그인해주세요.", type: "info" });
+          Toastify({ message: "아이디 또는 비밀번호가 올바르지 않습니다.", type: "error" });
           handleLogout(false);
         }
       }
@@ -135,9 +132,6 @@ const handleLogout = (showMessage: boolean = true) => {
   }
 
   localStorage.removeItem("accessToken");
-  localStorage.removeItem("username");
-  localStorage.removeItem("role");
-
   navigate("/");
 };
 
