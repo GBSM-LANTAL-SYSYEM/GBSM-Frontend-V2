@@ -1,7 +1,8 @@
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 import { Toastify } from "@/components/Toastify";
 import { postWithToken, fetcherWithToken } from "@/api/server";
 import { useNavigate } from "react-router-dom";
+import { checkToken } from "@/utils";
 
 interface LoginData {
   login: string;
@@ -41,6 +42,10 @@ const useAuth = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    checkToken(navigate);
+  }, []);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -14,6 +14,7 @@ const App = () => {
         <Route path={"/"} element={<R.Signin />} />
         <Route path={"/signup"} element={<R.Signup />} />
         <Route path={"/student"} element={<R.StudentScreen />} />
+        <Route path={"/student/rental"} element={<R.RentalPage />} />
         <Route path={"*"} element={<R.NotFound />} />
       </Routes>
   )

@@ -1,15 +1,5 @@
 import { useMemo, useState } from "react";
-
-interface Lab {
-    userId: number;
-    rentalDate: string;
-    rentalStartTime: string;
-    rentalUser: string;
-    rentalUsers: string;
-    rentalPurpose: string;
-    deletionRental: boolean;
-    labName: string;
-}
+import { Lab } from "@/types";
 
 const useSortLab = (rentalRequests: Lab[]) => {
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");

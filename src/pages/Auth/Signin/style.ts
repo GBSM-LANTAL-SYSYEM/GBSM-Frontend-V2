@@ -24,7 +24,7 @@ export const Parent = styled.div`
 
 export const MainCont = styled.div`
   margin: 5vh auto 5rem;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0;
   width: 70%;
   height: 74%;
   border-radius: 8px;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const InputCont = styled.div`
+export const SelectCont = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -12,7 +12,7 @@ export const InputCont = styled.div`
     padding: 5px 0;
   }
 
-  & > input {
+  & > select {
     width: 300px;
     height: 40px;
     margin-top: 15px;
@@ -20,14 +20,5 @@ export const InputCont = styled.div`
     border: 2px solid #bebec7;
     border-radius: 5px;
     outline: none;
-  }
-
-  & > input[type="date"] {
-    width: 300px;
-    padding: 0 5px;
-
-    &:placeholder-shown {
-      display: none;
-    }
   }
 `;

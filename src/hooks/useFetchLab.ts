@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { GBSM_SERVER } from "@/api/server"
 import { Toastify } from "@/components/Toastify";
-import useAuth from "./useAuth";
 
 interface Lab {
     userId: number;
@@ -17,7 +16,6 @@ interface Lab {
 const useFetchLab = () => {
     const [rentalRequests, setRentalRequests] = useState<Lab[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const { handleLogout } = useAuth()
 
     const fetchAvailableLabs = async () => {
         setIsLoading(true);
@@ -27,8 +25,7 @@ const useFetchLab = () => {
             console.log(response.data) // 승인 됐는지 확인해봐야함
         } catch (error: any) {
             if(error.status === 401) {
-                Toastify({message: "세션이 만료되었습니다. 로그인해주세요.", type: "info"})
-                handleLogout(false)
+                Toastify({message: "세션이 만료되었습니다. 로그아웃해주세요.", type: "info"})
             }
         } finally {
             setIsLoading(false);
