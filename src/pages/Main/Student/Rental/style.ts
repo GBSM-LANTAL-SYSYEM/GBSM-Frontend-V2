@@ -52,11 +52,5 @@ export const BtnCont = styled.div`
   .next {
     background-color: ${colors.primary};
     color: ${colors.white};
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: ${colors.primary};
-    }
   }
 `

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import { Toastify } from "@/components/Toastify";
 import { postWithToken, fetcherWithToken } from "@/api/server";
 import { useNavigate } from "react-router-dom";
 import { checkToken } from "@/utils";
+import { useFormSubmission } from "@/hooks";
 
 interface LoginData {
   login: string;
@@ -30,9 +31,9 @@ interface CheckTokenResponse {
 }
 
 const useAuth = () => {
-  const [loginData, setLoginData] = useState<LoginData>({ 
-    login: "", 
-    password: ""
+  const [loginData, setLoginData] = useState<LoginData>({
+    login: "",
+    password: "",
   });
 
   const [signupData, setSignupData] = useState<SignupData>({
@@ -40,42 +41,35 @@ const useAuth = () => {
     password: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     checkToken(navigate);
-  }, []);
+  }, [navigate]);
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignInLogic = async (e: React.FormEvent<HTMLFormElement>, data: LoginData) => {
     e.preventDefault();
-    setIsLoading(true);
-  
+
     try {
-      const response = await postWithToken(null, "/auth/login", loginData);
-  
-      if (!response.data.success) {
+      const response = await postWithToken(null, "/auth/login", data);
+
+      if (!response.data.success || !response.data.accessToken) {
         throw { response: { status: 400 } };
       }
 
-      if (!response.data.accessToken) {
-        throw { response: { status: 400 } };
-      }
-  
       const accessToken = response.data.accessToken;
       localStorage.setItem("accessToken", accessToken);
-  
+
       const verifyResponse = await fetcherWithToken(accessToken, "/auth/check_token");
       const userData: CheckTokenResponse = verifyResponse.data;
-  
+
       const { username, role } = userData.body.userStatus;
-  
+
       Toastify({ message: `${username}님, 환영합니다!`, type: "info" });
-  
+
       setTimeout(() => {
         navigate(role === "admin" ? "/admin" : "/student");
       }, 2000);
-  
     } catch (error: any) {
       if (error.response) {
         if (error.response.status === 400) {
@@ -85,62 +79,76 @@ const useAuth = () => {
           handleLogout(false);
         }
       }
-    } finally {
-      setIsLoading(false);
+      throw error;
     }
-};
+  };
 
-const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setIsLoading(true);
+  const handleSignupLogic = async (e: React.FormEvent<HTMLFormElement>, data: SignupData) => {
+    e.preventDefault();
 
-  if (signupData.username.length < 4 || signupData.username.length > 15) {
-    Toastify({ message: "아이디는 4~15자 사이여야 합니다.", type: "error" });
-    setIsLoading(false);
-    return;
-  }
-
-  if (signupData.password.length < 4 || signupData.password.length > 20) {
-    Toastify({ message: "비밀번호는 4~20자 사이여야 합니다.", type: "error" });
-    setIsLoading(false);
-    return;
-  }
-
-  try {
-    const response = await postWithToken(null, "/user/signup", signupData);
-
-    if (response.status === 409) {
-      throw new Error(response.data.message); 
+    if (data.username.length < 4 || data.username.length > 15) {
+      Toastify({ message: "아이디는 4~15자 사이여야 합니다.", type: "error" });
+      throw new Error("Invalid username length");
     }
 
-    Toastify({ message: "회원가입이 완료되었습니다! 자동으로 이동됩니다.", type: "success" });
-
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
-
-  } catch (error: any) {
-    if (error.status === 400) {
-      Toastify({ message: "아이디와 비밀번호를 입력해주세요.", type: "error" });
+    if (data.password.length < 4 || data.password.length > 20) {
+      Toastify({ message: "비밀번호는 4~20자 사이여야 합니다.", type: "error" });
+      throw new Error("Invalid password length");
     }
-    if (error.status === 409) {
-      Toastify({ message: "이미 사용중인 아이디입니다.", type: "error" });
+
+    try {
+      const response = await postWithToken(null, "/user/signup", data);
+
+      if (response.status === 409) {
+        throw new Error(response.data.message);
+      }
+
+      Toastify({ message: "회원가입이 완료되었습니다! 자동으로 이동됩니다.", type: "success" });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (error: any) {
+      if (error.status === 400) {
+        Toastify({ message: "아이디와 비밀번호를 입력해주세요.", type: "error" });
+      }
+      if (error.status === 409) {
+        Toastify({ message: "이미 사용중인 아이디입니다.", type: "error" });
+      }
+      throw error;
     }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
-const handleLogout = (showMessage: boolean = true) => {
-  if (showMessage) {
-    Toastify({ message: "로그아웃되었습니다.", type: "info" });
-  }
+  const { isSubmitting: isSignInLoading, handleSubmission: handleSignIn } = useFormSubmission({
+    formData: loginData,
+    handleSubmitLogic: handleSignInLogic,
+  });
 
-  localStorage.removeItem("accessToken");
-  navigate("/");
-};
+  const { isSubmitting: isSignupLoading, handleSubmission: handleSignup } = useFormSubmission({
+    formData: signupData,
+    handleSubmitLogic: handleSignupLogic,
+  });
 
-  return { loginData, setLoginData, handleSignIn, signupData, setSignupData, handleSignup, isLoading, handleLogout };
+  const handleLogout = (showMessage: boolean = true) => {
+    if (showMessage) {
+      Toastify({ message: "로그아웃되었습니다.", type: "info" });
+    }
+
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
+
+  return {
+    loginData,
+    setLoginData,
+    handleSignIn,
+    signupData,
+    setSignupData,
+    handleSignup,
+    isSignInLoading,
+    isSignupLoading,
+    handleLogout,
+  };
 };
 
 export default useAuth;

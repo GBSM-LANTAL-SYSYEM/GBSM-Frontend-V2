@@ -1,11 +1,11 @@
 import * as S from "./style";
 
 import React from "react";
-import useAuth from "@hooks/useAuth";
+import { useAuth } from "@/hooks";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const SignupContainer = () => {
-    const { signupData, setSignupData, handleSignup, isLoading } = useAuth();
+    const { signupData, setSignupData, handleSignup, isSignupLoading } = useAuth();
     const [showPassword, setShowPassword] = React.useState(false);
 
     const togglePasswordVisibility = () => {
@@ -37,11 +37,11 @@ const SignupContainer = () => {
                         {showPassword ? <AiFillEyeInvisible className="show_logo" /> : <AiFillEye className="show_logo" />}
                     </S.PasswordToggleButton>
                 </S.InputCont>
-                <S.SignupBtn type="submit" disabled={isLoading}>
-                    회원가입
+                <S.SignupBtn type="submit" disabled={isSignupLoading}>
+                    {isSignupLoading ? "회원가입 중..." : "회원가입"}
                 </S.SignupBtn>
                 <S.SignUpBtn to={"/"}>
-                    계정이 있으신가요? &nbsp; <span style={{ color: '#00AA87' }}> 로그인으로 돌아가기</span>
+                    계정이 있으신가요? <span style={{ color: '#00AA87' }}> 로그인으로 돌아가기</span>
                 </S.SignUpBtn>
             </S.SignupInputWrap>
         </S.SignupInputCont>

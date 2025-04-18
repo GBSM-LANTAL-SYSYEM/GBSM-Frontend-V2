@@ -1,11 +1,11 @@
 import * as S from "./style";
 
 import React from "react";
-import useAuth from "@hooks/useAuth";
+import { useAuth } from "@/hooks";
 import { AiFillExclamationCircle, AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const SigninContainer = () => {
-    const { loginData, setLoginData, handleSignIn, isLoading } = useAuth();
+    const { loginData, setLoginData, handleSignIn, isSignInLoading } = useAuth();
     const [showPassword, setShowPassword] = React.useState(false);
 
     const togglePasswordVisibility = () => {
@@ -41,8 +41,8 @@ const SigninContainer = () => {
                         {showPassword ? <AiFillEyeInvisible className="show_logo" /> : <AiFillEye className="show_logo" />}
                     </S.PasswordToggleButton>
                 </S.InputCont>
-                <S.LoginBtn type="submit" disabled={isLoading}>
-                    로그인
+                <S.LoginBtn type="submit" disabled={isSignInLoading}>
+                    {isSignInLoading ? "로그인 중..." : "로그인"}
                 </S.LoginBtn>
                 <S.SignInBtn to={"/signup"}>
                     <span>회원가입</span>
