@@ -14,7 +14,8 @@ const StudentScreen: React.FC = () => {
     const { sortedRequests, sortOrder, setSortOrder } = useSortLab(rentalRequests);
 
     return (
-        <>
+        <>  
+            <C.StudentSide />
             <S.TopCont>
                 <S.Parent>
                     <S.Header>

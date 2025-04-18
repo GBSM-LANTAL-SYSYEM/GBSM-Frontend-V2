@@ -4,21 +4,26 @@ export const SelectCont = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 40px;
 
   & > span {
-    font-size: 1.2rem;
-    font-weight: 600;
-    padding: 5px 0;
+    font-size: 24px;
+    font-weight: 400;
+    color: #666666;
   }
 
   & > select {
-    width: 300px;
+    width: 450px;
     height: 40px;
-    margin-top: 15px;
-    padding: 5px 10px;
-    border: 2px solid #bebec7;
-    border-radius: 5px;
+    border: none;
+    border-bottom: 2px solid #DBDBDB;
+    font-size: 20px;
     outline: none;
+    margin-top: 10px;
+    transition: border-bottom 0.1s ease-in;
+
+    &:focus {
+      border-bottom: 2px solid #48A988;
+    }
   }
 `;

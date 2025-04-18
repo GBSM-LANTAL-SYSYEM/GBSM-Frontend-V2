@@ -9,7 +9,7 @@ export interface Lab {
     labName: string;
 };
 
-export interface RentalFormData {
+export type RentalFormData = {
     rentalDate: string;
     rentalUser: string;
     rentalUsers: string;

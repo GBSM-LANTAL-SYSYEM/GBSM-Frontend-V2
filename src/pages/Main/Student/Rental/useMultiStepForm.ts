@@ -3,6 +3,7 @@ import { useState, ReactElement } from 'react';
 type StepProp = {
   title: string;
   element: ReactElement;
+  img: string;
 };
 
 const useMultiStepForm = (steps: StepProp[]) => {
@@ -20,6 +21,7 @@ const useMultiStepForm = (steps: StepProp[]) => {
     currentStepIndex,
     currentTitle: steps[currentStepIndex].title,
     currentStep: steps[currentStepIndex].element,
+    currentImg: steps[currentStepIndex].img,
     isFirstStep: currentStepIndex === 0,
     isLastStep: currentStepIndex === steps.length - 1,
     prev,

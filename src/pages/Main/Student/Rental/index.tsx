@@ -1,37 +1,46 @@
 import * as C from "@/allFiles";
 import * as S from "./style";
 
-import { useMultiStepForm } from "@/hooks";
-import { FormDataProps } from "@/types";
+import useMultiStepForm from "./useMultiStepForm";
+import { RentalFormData } from "@/types";
+import { StepOne, StepTwo, StepThree } from "@/assets";
+import { useSubmit  } from "@/hooks";
 import { FormEvent, useState } from "react";
   
   const INITIAL_FORMDATA = {
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    nickname: '',
+    rentalDate: '',
+    rentalUser: '',
+    rentalUsers: '',
+    rentalPurpose: '',
+    rentalStartTime: '',
+    labName: '',
   };
 
 const RentalPage = () => {
     const [formData, setFormData] = useState(INITIAL_FORMDATA);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const handleSubmitLogic = useSubmit(formData, setIsSubmitting);
 
-    const updateFields = (fields: Partial<FormDataProps>) => {
+    const updateFields = (fields: Partial<RentalFormData>) => {
       setFormData((prev) => ({ ...prev, ...fields }));
     };
   
-    const { currentTitle, currentStep, prev, next, isFirstStep, isLastStep } = useMultiStepForm([
+    const { currentTitle, currentStep, currentImg,  prev, next, isFirstStep, isLastStep } = useMultiStepForm([
       {
-        title: 'Input Email',
-        element: <C.EmailForm {...formData} updateFields={updateFields} />,
+        title: '대표자 이름과\n사용자 인원을 모두 입력해주세요!',
+        element: <C.UserInfoForm {...formData} updateFields={updateFields} />,
+        img: StepOne
       },
   
       {
-        title: 'Input Password',
-        element: <C.PasswordForm {...formData} updateFields={updateFields} />,
+        title: '사용 목적을 적어주세요!',
+        element: <C.PurposeForm {...formData} updateFields={updateFields} />,
+        img: StepTwo
       },
       {
-        title: 'Input Nickname',
-        element: <C.NicknameForm {...formData} updateFields={updateFields} />,
+        title: '대여 희망일과 대여 시간,\n희망하는 실습실을 입력해주세요!',
+        element: <C.ScheduleForm {...formData} updateFields={updateFields} />,
+        img: StepThree
       },
     ]);
   
@@ -39,27 +48,42 @@ const RentalPage = () => {
         e.preventDefault();
       
         if (isLastStep) {
-          // TODO: Request form
-          return alert("Submitted!");
+          setIsSubmitting(true)
+          handleSubmitLogic(e);
+          return
         }
       
         next();
       };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <header>
-          <button type="button" onClick={prev}>
-            Prev
-          </button>
-          <span>{currentTitle}</span>
-          <button>{isLastStep ? "Submit" : "Next"}</button>
-        </header>
-
-        {currentStep}
-      </form>
-    </div>
+    <>
+      <C.StudentSide />
+      <S.TopCont>
+        <S.Header>
+          <h4>실습실 대여</h4>
+          <img src={currentImg} alt="순서 이미지" draggable="false" />
+        </S.Header>
+        <S.Parent>
+          <pre>
+            <h1>{currentTitle}</h1>
+          </pre>
+          <form onSubmit={handleSubmit}>
+            {currentStep}
+            <S.BtnCont style={{ position: "absolute", bottom: 20, right: 20 }}>
+              {!isFirstStep && (
+                <button type="button" onClick={prev} className="prev">
+                  이전
+                </button>
+              )}
+              <button className="next" disabled={isSubmitting}>
+                {isLastStep ? (isSubmitting ? "제출 중.." : "제출하기"): "다음"}
+              </button>
+            </S.BtnCont>
+          </form>
+        </S.Parent>
+      </S.TopCont>
+    </>
   );
 };
 
