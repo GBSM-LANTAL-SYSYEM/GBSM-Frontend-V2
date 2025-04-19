@@ -251,11 +251,6 @@ export const RentalUserWrap = styled.div`
   }
 `;
 
-export const DeleteDetail = styled.img`
-  width: 20px;
-  cursor: pointer;
-`;
-
 export const Tooltip = styled.div`
   position: relative;
   display: inline-block;

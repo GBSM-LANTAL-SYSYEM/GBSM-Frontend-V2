@@ -17,7 +17,7 @@ type UserInfoFormProps = {
     return (
       <>
         <C.InputField
-        label="대표자 이름 기재 (반 / 이름)"
+        label="대표자 이름 기재 (1101 홍길동)"
         type="text"
         name="rentalUser"
         value={rentalUser}
@@ -27,7 +27,7 @@ type UserInfoFormProps = {
       />
 
       <C.InputField
-        label="사용 인원 전원 기재 (반 / 이름)"
+        label="사용 인원 전원 기재 (1101 홍길동, 1201 홍길순)"
         type="text"
         name="rentalUsers"
         value={rentalUsers}
@@ -59,7 +59,7 @@ type UserInfoFormProps = {
             <textarea
               name="rentalPurpose"
               value={rentalPurpose}
-              placeholder="사용 목적을 입력하세요"
+              placeholder="사용 목적을 입력하세요."
               onChange={handleChange}
               required
             />

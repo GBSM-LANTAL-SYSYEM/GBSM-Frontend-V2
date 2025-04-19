@@ -41,7 +41,7 @@ const SignupContainer = () => {
                     {isSignupLoading ? "회원가입 중..." : "회원가입"}
                 </S.SignupBtn>
                 <S.SignUpBtn to={"/"}>
-                    계정이 있으신가요? <span style={{ color: '#00AA87' }}> 로그인으로 돌아가기</span>
+                    계정이 있으신가요? &nbsp; <span style={{ color: '#00AA87' }}>로그인으로 돌아가기</span>
                 </S.SignUpBtn>
             </S.SignupInputWrap>
         </S.SignupInputCont>

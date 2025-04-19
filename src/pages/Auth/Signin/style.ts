@@ -84,6 +84,7 @@ export const LoginLogoCont = styled.div`
 
   .gbsw_new_logo {
     width: 4rem;
+    margin-left: 20px;
   }
 `;
 
