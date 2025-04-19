@@ -10,6 +10,7 @@ import { UserInfoForm, PurposeForm, ScheduleForm } from "./components/Field/Rent
 import Loading from "./components/Loading";
 import LogOutModal from "./components/Modal/Logout";
 import StudentSide from "./components/Sidebar/Student";
+import Tooltip from "./components/Tooltip";
 import NotFound from "./pages/Error/404";
 
 export {
@@ -27,5 +28,6 @@ export {
   Loading,
   LogOutModal,
   StudentSide,
+  Tooltip,
   NotFound,
 };
